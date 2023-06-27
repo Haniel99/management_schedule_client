@@ -3,7 +3,7 @@ import './table.css';
 const SubjectsTable = ({datos}) => {
 
   return (
-    <div className="w-full m-5 overflow-x-auto">
+    <div className="w-full">
       <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
         <thead className="bg-gray-50">
           <tr className="text-gray-600 text-left">

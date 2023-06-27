@@ -107,16 +107,132 @@ const useGetSubjects = async (token) => {
 };
 const useAddClassBlock = async (token, data) => {
   try {
-    const res = await instance.post("admin/add-block", {data}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await instance.post(
+      "admin/add-block",
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return { status: true, response: res.data };
   } catch (error) {
     return { status: false, response: "Error al agregar el horario" };
   }
 };
+
+const useSetSubject = async (data, token) => {
+  try {
+    const res = await instance.post(
+      "admin/add-subject",
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data };
+  } catch (error) {
+    return { status: false, response: "Error al agregar la asignatura" };
+  }
+};
+
+const useSetProfessor = async (data, token) => {
+  try {
+    const res = await instance.post(
+      "login/signup",
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+};
+
+const useIsType = async (token, type) => {
+  try {
+    const res = await instance.get(
+      type,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+}
+const useSetRoom = async (data, token) => {
+  try {
+    const res = await instance.post(
+      "admin/add-room",
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+};
+const useGetType = async (token) => {
+  try {
+    const res = await instance.get('verify',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data.response };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+}
+const useUpdateClassBlock = async (data, token)=> {
+  try {
+    console.log(token);
+    const res = await instance.post('admin/updateClassBlock',
+    {data},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data.response };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+}
+const useDeleteClassBlock = async (data, token)=> {
+  try {
+    console.log(token);
+    const res = await instance.post('admin/deleteClassBlock',
+    {data},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, response: res.data.response };
+  } catch (error) {
+    return { status: false, response: error.response };
+  }
+}
 export {
   useGetSchedule,
   useGetSemesters,
@@ -125,5 +241,12 @@ export {
   useGetProfessors,
   useGetRooms,
   useGetSubjects,
-  useAddClassBlock
+  useAddClassBlock,
+  useSetSubject,
+  useSetProfessor,
+  useSetRoom,
+  useIsType,
+  useGetType,
+  useUpdateClassBlock,
+  useDeleteClassBlock
 };

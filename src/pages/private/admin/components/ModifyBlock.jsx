@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Search from "./SearchSubject";
 import {
+  useDeleteClassBlock,
   useGetProfessors,
   useGetRooms,
   useGetSubjects,
-  useAddClassBlock,
+  useUpdateClassBlock,
 } from "../../../../hooks/useAdmin";
-import { useNavigate } from "react-router-dom";
-
 const grupos = [
   {
     grupo_id: 1,
@@ -23,8 +23,7 @@ const grupos = [
     nombre: "C",
   },
 ];
-
-const AddClassBlockForm = ({ data, setShowForm }) => {
+const ModifyBlock = ({ data, dataS, setShowForm }) => {
   const navigate = useNavigate();
   const [professors, setProfessors] = useState(null);
   const [rooms, setRooms] = useState(null);
@@ -35,7 +34,7 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
   const [selectGroup, setSelectGroup] = useState(null);
   const [error, setError] = useState(false);
   const dataRedux = useSelector((state) => state.user);
-  //This effect is to get the subjects
+
   useEffect(() => {
     async function getSubjects() {
       const res = await useGetSubjects(dataRedux.token);
@@ -59,34 +58,66 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
     }
     getProfessor();
   }, []);
-  //Send datas to the data base
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const fecha = new Date();
-    const yearActual = fecha.getFullYear();
-    const dataQ = {
-      bloque_id: data.bloque[1],
-      semestre_id: parseInt(data.semesterId),
-      dia: data.dia,
-      semestre: parseInt(data.semestre),
-      asignatura_id: selectSubject.asignatura_id,
-      docente_id: selectProfesor.profesor_id,
-      sala_id: selectRomm.sala_id,
-      year: yearActual,
-      grupo: selectGroup.nombre,
+
+  const saveChange = async (e) => {
+    let asignatura =
+      selectSubject == null ? dataS.asignatura_id : selectSubject.asignatura_id;
+    let sala = selectRomm == null ? dataS.sala_id : selectRomm.sala_id;
+    let profesor =
+      selectProfesor == null ? dataS.docente_id : selectProfesor.docente_id;
+    let grupo = selectGroup == null ? dataS.grupo : selectGroup.nombre;
+    const data = {
+      change: {
+        asignatura_id: asignatura,
+        sala_id: sala,
+        docente_id: profesor,
+        grupo,
+      },
+      validate: {
+        bloque_id: dataS.bloque_id,
+        semestre_id: dataS.semestre_id,
+        docente_id: dataS.docente_id,
+        asignatura_id: dataS.asignatura_id,
+        sala_id: dataS.sala_id,
+        grupo: dataS.grupo,
+        semestre: dataS.semestre,
+        year: dataS.year,
+        dia: dataS.dia,
+      },
     };
-    const res = await useAddClassBlock(dataRedux.token, dataQ);
-    if (res.status) {
-      alert(res.response.response);
-      navigate("/admin/");
+    const res = await useUpdateClassBlock(data, dataRedux.token);
+    if (!res.status) {
+      setError(true);
+    } else {
+      setShowForm(false);
     }
-    setError(true);
   };
 
+  const deleteClassBlock = async (e) => {
+    var data = {
+      bloque_id: dataS.bloque_id,
+      semestre_id: dataS.semestre_id,
+      docente_id: dataS.docente_id,
+      asignatura_id: dataS.asignatura_id,
+      sala_id: dataS.sala_id,
+      grupo: dataS.grupo,
+      semestre: dataS.semestre,
+      year: dataS.year,
+      dia: dataS.dia,
+    };
+
+    const res = await useDeleteClassBlock(data, dataRedux.token);
+    if (!res.status) {
+      setError("Error al eliminar el bloque de clases");
+    } else {
+      alert("El bloque fue eliminado correctamente");
+      setShowForm(false);
+    }
+  };
   return (
     <div className="flex h-full gap-3">
       <div className="w-2/5 border border-gray-300 p-8 rounded-md">
-        <h2 className="text-xl my-5">Seleccione los datos para el bloque</h2>
+        <h2 className="text-xl my-5">Seleccione los datos a modificar</h2>
         <div className="flex flex-col my-3">
           <div className="">
             {subjects == null ? (
@@ -131,11 +162,11 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
         </div>
       </div>
       <div className="w-3/5 border border-gray-300 p-8 rounded-md">
-        <h2 className="text-xl my-5">Datos a guardar para el bloque</h2>
+        <h2 className="text-xl my-5">Datos del bloque</h2>
         <div className="mb-6">
           <ul>
             <li className="mb-2">
-              <label form ="semestre" className="font-semibold">
+              <label form="semestre" className="font-semibold">
                 Semestre:
               </label>{" "}
               {data.semestre}
@@ -156,39 +187,41 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
               <label form="asignatura" className="font-semibold">
                 Asignatura:
               </label>{" "}
-              {selectSubject == null ? " " : selectSubject.nombre}
+              {selectSubject == null ? dataS.asignatura : selectSubject.nombre}
             </li>
             <li className="mb-2">
               <label form="sala" className="font-semibold">
                 Sala:
               </label>{" "}
-              {selectRomm == null ? " " : selectRomm.nombre}
+              {selectRomm == null ? dataS.sala : selectRomm.nombre}
             </li>
             <li className="mb-2">
               <label form="professor" className="font-semibold">
                 Profesor:
               </label>{" "}
-              {selectProfesor == null ? " " : selectProfesor.nombre}
+              {selectProfesor == null
+                ? dataS.nombre_profesor
+                : selectProfesor.nombre}
             </li>
             <li className="mb-2">
               <label form="grupo" className="font-semibold">
                 Grupo:
               </label>{" "}
-              {selectGroup == null ? " " : selectGroup.nombre}
+              {selectGroup == null ? dataS.grupo : selectGroup.nombre}
             </li>
           </ul>
-            {error ? (
-              <p className="text-red-500 bg-red-200 px-4 py-2 rounded">
-                Error al agregar el bloque de horario
-              </p>
-            ) : (
-              <></>
-            )}
+          {error ? (
+            <p className="text-red-500 bg-red-200 px-4 py-2 rounded">
+              Error al actualizar el bloque
+            </p>
+          ) : (
+            <></>
+          )}
         </div>
-        <div className="flex justify-end">
+        <div className="flex gap-3 justify-end">
           <button
-            onClick={handleSubmit}
-            className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md mr-2"
+            onClick={saveChange}
+            className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md"
           >
             Guardar
           </button>
@@ -198,10 +231,16 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
           >
             Cancelar
           </button>
+          <button
+            onClick={deleteClassBlock}
+            className="px-4 py-2 bg-rose-600 text-white rounded-md"
+          >
+            Eliminar
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default AddClassBlockForm;
+export default ModifyBlock;

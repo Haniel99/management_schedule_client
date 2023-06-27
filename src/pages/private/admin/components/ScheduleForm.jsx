@@ -104,7 +104,7 @@ const ScheduleForm = ({toggle}) => {
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleCreate}
-            className="px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm"
+            className="px-4 py-2 text-white bg-indigo-500 rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:text-sm"
           >
             Crear horario
           </button>
