@@ -4,6 +4,8 @@ import {
     FaChalkboardTeacher,
     FaAddressBook 
 } from "react-icons/fa";
+
+import { HiBuildingOffice } from "react-icons/hi2"; 
 import { BiLogOut } from "react-icons/bi"
 
 export const adminExit = 
@@ -33,5 +35,10 @@ export const adminElements = [
         id: 4,
         icon: <FaAddressBook className="nav" aria-hidden="true"/>,
         text: "Asignaturas"
+    },
+    {
+        id: 5,
+        icon: <HiBuildingOffice className="nav" aria-hidden="true"/>,
+        text: "Salas"
     },
 ]

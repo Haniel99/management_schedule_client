@@ -1,6 +1,6 @@
 import NavLinks from "../NavLink";
 
-const ElementsNav = ({items, toogle}) => {
+const ElementsNav = ({items}) => {
     
     return(
         <>

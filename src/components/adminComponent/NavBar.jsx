@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { adminElements, adminExit } from "../../utils/DataForNav";
 import { NavLink } from "react-router-dom";
 import ElementsNav from "./ElementsNav";
 import NavLinks from "../NavLink";
-const NavBar = ({items}) => {
-    const [toogle, setToggle] = useState(false);
-
+import { useDispatch } from "react-redux";
+import { resetUser } from "../../app/state/user"; 
+const NavBar = ({items, exit}) => {
+    const dispatch = useDispatch();
     return (
         <div className="py-4 flex flex-col justify-between px-4 h-full">
             <div className="scroll-auto">
@@ -18,10 +17,13 @@ const NavBar = ({items}) => {
                 />
                 </NavLink>
                 </div>
-                <ElementsNav items = {adminElements} />
+                <ElementsNav items = {items} />
             </div>
-            <div className="">
-                <NavLinks text={adminExit.text} icon={adminExit.icon} link={adminExit.text} />
+            <div onClick={()=> {
+                dispatch(resetUser())
+                window.location.href = "/"
+                } } >
+                <NavLinks  text={exit.text} icon={exit.icon} link={exit.text} />
             </div>
         </div>
     );

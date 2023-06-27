@@ -1,7 +1,7 @@
 import { instance } from "../utils/configurationAPI";
-const useLogin = async (data) => {
+const useLogin = async ( path,data) => {
     try {
-        const res = await instance.post('login/head',{
+        const res = await instance.post(`login/${path}`,{
             data
         });
         return res.data;  

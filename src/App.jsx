@@ -1,23 +1,23 @@
 import { 
-  BrowserRouter, 
-  Outlet, 
+  BrowserRouter,  
   Route,
-  Routes
 } from 'react-router-dom';
 import RouteNotFount from './utils/routeNotFoud';
-import { useSelector } from 'react-redux'; 
-import { ProtectedPath, ProtectedLogin } from './utils/protectedPath';
+import { ProtectedPathAdmin, ProtectedPathProfessor,ProtectedLogin, VerifyType } from './utils/protectedPath';
 import Login from './pages/public';
-import Rector from './pages/private/Rector';
-import Professor from './pages/private/Professor';
 import Admin from './pages/private/admin';
+import Professor from './pages/private/Professor';
+import Rector from './pages/private/Rector';
 function App() {
   return (
   <> 
     <BrowserRouter>
     <RouteNotFount>
-    <Route path='/login' element= {<Login/>} />
-    <Route path='/admin/*' element ={<Admin/>}/>
+    <Route index element= {<VerifyType children = {<Login/>} />}/>
+    <Route path='/login' element= {<ProtectedLogin children = {<Login/>} />} />
+    <Route path='/admin/*' element ={<ProtectedPathAdmin children={<Admin/>} />}/>
+    <Route path='/professor/*' element ={<ProtectedPathProfessor type={'professor'} children = {<Professor/>}  />} />
+    <Route path='/rector/*' element ={<ProtectedPathProfessor type={'rector'} children = {<Rector/>}  />} />
     </RouteNotFount>
      </BrowserRouter>
   </>
