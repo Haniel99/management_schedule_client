@@ -30,29 +30,19 @@ const LoginPage = () => {
     try {
       if (type === "Jefe de carrera") {
         res = await useLogin("head", loginData);
-        if (res.status) {
-          const { response } = res;
-          dispatch(createUser({ token: response }));
-          window.location.href = "/";
-        }
       } else if (type === "Rector") {
         res = await useLogin("rector", loginData);
-        if (res.status) {
-          const { response } = res;
-          dispatch(createUser({ token: response }));
-          window.location.href = "/";
-        }
       } else {
         res = await useLogin("professor", loginData);
-        if (res.status) {
+      }
+      if (res.status) {
           const { response } = res;
           dispatch(createUser({ token: response }));
           window.location.href = "/";
-        }
-      }
-
+        }else{
       setAlert(true);
       setAlertText(res.response);
+      }
     } catch (error) {
       console.log(error);
     }
