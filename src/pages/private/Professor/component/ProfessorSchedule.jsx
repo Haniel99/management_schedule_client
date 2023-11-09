@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Schedule from "./Schedule";
+import ProfessorSetting from "./ProfessorSetting";
 import ManagementSchedule from "../../../../components/adminComponent/ManagementSchedule";
 import { useSelector } from "react-redux";
 import {
   useGetSchedule,
   useGetSemesters,
 } from "../../../../hooks/useProfessor";
+
 const ProfessorSchedule = () => {
   const dataRedux = useSelector((state) => state.user);
   const [seeOption, setSeeOption] = useState(null);
   //
   const [dataSection, setDataSection] = useState([]);
   const [ dataOfWeek, setDataOfWeek ] = useState([]);
+  const [ isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [ selectedTimeSlots, setSelectedTimeSlots] = useState(null);
+
   useEffect(() => {
     async function get() {
       //This res is to get the schedules datas
@@ -51,7 +56,24 @@ const ProfessorSchedule = () => {
     if(res.status){
         setDataOfWeek(res.response);
     }
-};
+  };
+
+  const selectedSlotClick = (selectedTime) => { 
+    setSelectedTimeSlots(selectedTime);
+    setIsSettingModalOpen(true); //Para abrir el modal con el formulario
+  };
+
+  const SaveSetting = (data) => {
+
+    console.log("Datos guardados",data);
+    setIsSettingModalOpen(false); //Cerrar el modal
+  };
+
+  const CancelSetting = () => {
+    //Cerrar el modal sin guardar
+    setIsSettingModalOpen(false);
+  };
+
   return (
     <div className="flex flex-col w-full p-2">
 
@@ -59,7 +81,7 @@ const ProfessorSchedule = () => {
         <ul className="flex gap-3">
           <li onClick={() => setSeeOption('H') } >
           {dataSection.length === 0 ? (
-            <div className="button">No Hay regsitros</div>
+            <div className="button">No Hay registros</div>
           ) : (
             <ManagementSchedule data={dataSection} fn={setSemester} />
           )}
@@ -80,7 +102,21 @@ const ProfessorSchedule = () => {
           ) : (
             <></>
           )}
-          {seeOption === "C" ? <>Configuracion</> : <></>}
+          {seeOption === "C" ? (dataOfWeek.length===0 ? (<>Configuracion</> 
+          ) : (
+              <>
+              <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} onSlotClick={selectedSlotClick}/>
+              {isSettingModalOpen && (
+                <ProfessorSetting
+                  onSave={SaveSetting}
+                  onCancel={CancelSetting}
+                />
+              )}
+              </>
+            )
+          ) : (
+            <></>
+          )}
           {seeOption === "M" ? <>Mas</> : <></>}
         </div>
       </div>
