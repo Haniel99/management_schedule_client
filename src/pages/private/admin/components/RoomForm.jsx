@@ -56,8 +56,8 @@ function RoomForm({ set }) {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center text-center">
-      <h2 className="text-2xl font-bold mb-4">Ingrese los datos de la sala</h2>
+    <div className="flex flex-col mx-auto  justify-center bg-gray-50 py-6 px-8  shadow-lg rounded-lg">
+      <h2 className="text-2xl text-gray-700 font-bold mb-4">Ingrese los datos de la sala</h2>
       <form className="w-full max-w-sm" action="">
         <div className="flex flex-col items-center mb-4">
           {alrt ? <StatusMessage isSuccess={alertT} message={alertText} /> : <></>}
@@ -79,6 +79,16 @@ function RoomForm({ set }) {
             onChange={saveRoomData}
             onKeyDown={handleCodeInput}
             placeholder="Número de la sala"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            type=""
+          />
+        </div>
+        <div className="flex flex-col items-center mb-4">
+          <input
+            name="piso"
+            id="piso"
+            
+            placeholder="Piso"
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             type=""
           />

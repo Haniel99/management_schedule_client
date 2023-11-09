@@ -23,7 +23,7 @@ const Subjects = () => {
       <div className="flex font-semibold bg-[#fafafa] shadow-md  w-full p-6 border-2 border-b-gray-200">
         <OpcionsSubjects nameButton={"asignatura"} option={setShowOption} />
       </div>
-      <div className="flex w-full mt-6 justify-center flex-grow overflow-auto">
+      <div className="flex w-full my-6 justify-center  overflow-auto">
         <div className="flex w-full">
           {showOption ? (
             subjects==null?<>Cargando</>: <SubjectsTable datos={subjects}/>

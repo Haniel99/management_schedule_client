@@ -21,8 +21,8 @@ const Professor = () => {
       <div className="flex font-semibold bg-[#fafafa] shadow-md  w-full p-6 border-2 border-b-gray-200">
         <OpcionsProfessor nameButton={"profesor"} option={setShowOption} />
       </div>
-      <div className="flex justify-center flex-grow overflow-auto">
-        <div className="w-11/12">
+      <div className="flex w-full my-6 justify-center  overflow-auto">
+        <div className="flex w-full">
         {showOption ? (
           professors ==null?<>Cargando</>:<UserStatistics datos={professors} />
         ) : <ProfessorForm set={setShowOption} />}

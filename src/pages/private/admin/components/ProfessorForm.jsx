@@ -76,8 +76,8 @@ const ProfessorForm = ({set}) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center text-center">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="flex flex-col mx-auto  justify-center bg-gray-50 py-6 px-8  shadow-lg rounded-lg">
+      <h2 className="text-2xl text-gray-700 font-bold mb-4">
         Ingrese los datos del profesor
       </h2>
       <form className="w-full max-w-sm" onSubmit={handleSubmit}>

@@ -2,8 +2,8 @@
 
 const Rooms = ({data}) => {
     return (
-        <div className="w-full m-5 overflow-x-auto">
-        <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+        <div className="w-full">
+        <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y shadow-md  divide-gray-300 overflow-hidden">
           <thead className="bg-gray-50">
             <tr className="text-gray-600 text-left">
               <th className="font-semibold text-sm uppercase px-6 py-4">
