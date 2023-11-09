@@ -13,10 +13,10 @@ const ProfessorSchedule = () => {
   const [seeOption, setSeeOption] = useState(null);
   //
   const [dataSection, setDataSection] = useState([]);
-  const [ dataOfWeek, setDataOfWeek ] = useState([]);
-  const [ isSettingModalOpen, setIsSettingModalOpen ] = useState(false);
-  const [ selectedTimeSlots, setSelectedTimeSlots ] = useState(null);
-  const [ selectedBlock, setSelectedBlock ] = useState(null); // Nuevo estado para el bloque horario seleccionado
+  const [dataOfWeek, setDataOfWeek] = useState([]);
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState(null);
+  const [selectedBlock, setSelectedBlock] = useState(null); // Nuevo estado para el bloque horario seleccionado
   const [confirmation, setConfirmation] = useState("");
 
   useEffect(() => {
@@ -48,15 +48,14 @@ const ProfessorSchedule = () => {
     setSeeOption(e.target.id);
   };
 
-
   const setSemester = async (schehule, plan, semester) => {
     const data = {
       schedule_id: schehule,
     };
 
     const res = await useGetSemesters(dataRedux.token, data);
-    if(res.status){
-        setDataOfWeek(res.response);
+    if (res.status) {
+      setDataOfWeek(res.response);
     }
   };
 
@@ -74,7 +73,7 @@ const ProfessorSchedule = () => {
       console.error("DataOfWeek is null or empty");
       return;
     }
-  
+
     // Actualizar el estado del bloque horario disponible en dataOfWeek
     const updatedDataOfWeek = dataOfWeek.map((dayData) => {
       // Verificar que dayData no sea null o undefined
@@ -82,27 +81,30 @@ const ProfessorSchedule = () => {
         console.error("DayData or DayData[1] is null or undefined");
         return [dayData[0], []];
       }
-  
+
       const updatedBlocks = dayData[1].map((block) => {
-        if (block.hora_inicio === selectedTime[0] && dayData[0] === selectedTime[1]) {
+        if (
+          block.hora_inicio === selectedTime[0] &&
+          dayData[0] === selectedTime[1]
+        ) {
           return { ...block, disponible: true, confirmation: "confirmed" };
         }
         return block;
       });
-  
+
       return [dayData[0], updatedBlocks];
     });
-  
+
     setDataOfWeek(updatedDataOfWeek);
-  
+
     // Enviar los datos al padre para guardar en la base de datos
     // ...
     updateSchedule({
       timeSlot: selectedBlock.timeSlot,
       dayOfWeek: selectedBlock.dayOfWeek,
       confirmation: "confirmed",
-    }); 
-  
+    });
+
     // Cerrar el modal y limpiar el estado de confirmación
     setIsSettingModalOpen(false);
     setConfirmation("");
@@ -110,14 +112,21 @@ const ProfessorSchedule = () => {
 
   const updateSchedule = ({ timeSlot, dayOfWeek, confirmation }) => {
     const className = `.px-6.py-4.whitespace-nowrap.text-center.border-b-2.border-gray-200.bg-green-100.ring.ring-green-400.ring-opacity-50[data-time="${timeSlot}"][data-day="${dayOfWeek}"]`;
-  
+
     const selectedBlockElement = document.querySelector(className);
     if (selectedBlockElement) {
-      selectedBlockElement.classList.remove("bg-green-100", "ring", "ring-green-400", "ring-opacity-50");
+      selectedBlockElement.classList.remove(
+        "bg-green-100",
+        "ring",
+        "ring-green-400",
+        "ring-opacity-50"
+      );
       selectedBlockElement.classList.add("bg-gray-100");
     }
-  
-    const selectedBlockTextElement = selectedBlockElement?.querySelector(".text-sm .font-medium");
+
+    const selectedBlockTextElement = selectedBlockElement?.querySelector(
+      ".text-sm .font-medium"
+    );
     if (selectedBlockTextElement) {
       selectedBlockTextElement.textContent = "Horario disponible";
     }
@@ -130,47 +139,75 @@ const ProfessorSchedule = () => {
 
   return (
     <div className="flex flex-col w-full p-2">
-
-      <nav className="mb-4"  >
+      <nav className="mb-4">
         <ul className="flex gap-3">
-          <li onClick={() => setSeeOption('H') } >
-          {dataSection.length === 0 ? (
-            <div className="button">No Hay registros</div>
-          ) : (
-            <ManagementSchedule data={dataSection} fn={setSemester} />
-          )}
+          <li onClick={() => setSeeOption("H")}>
+            {dataSection.length === 0 ? (
+              <div className="button">No Hay registros</div>
+            ) : (
+              <ManagementSchedule data={dataSection} fn={setSemester} />
+            )}
           </li>
 
-          <li onClick={()=>setSeeOption('C')}  id={"C"} className="button  cursor-pointer">
-            
+          <li
+            onClick={() => setSeeOption("C")}
+            id={"C"}
+            className="button  cursor-pointer"
+          >
+            Configuracion de disponibilidad
           </li>
-          <li onClick={ () => {setSeeOption("M")} } id={"M"} className="button  cursor-pointer">
+          <li
+            onClick={() => {
+              setSeeOption("M");
+            }}
+            id={"M"}
+            className="button  cursor-pointer"
+          >
             Más información
           </li>
         </ul>
       </nav>
       <div className="bg-gray-100 p-4 h-full overflow-auto  rounded-lg">
         <div className="flex justify-center items-center w-full">
-          {seeOption === "H" ? (dataOfWeek.length===0 ?<>Seleccciones un semestre</>:
-            <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} />
+          {seeOption === "H" ? (
+            dataOfWeek.length === 0 ? (
+              <>Seleccciones un semestre</>
+            ) : (
+              <div>
+                {" "}
+                <span className="flex border border-gray-300  w-full justify-center text-xl font-semibold text-gray-700 p-1 shadow-md rounded-lg   ">
+                  Horario semestral
+                </span>{" "}
+                <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} />
+              </div>
+            )
           ) : (
             <></>
           )}
-          {seeOption === "C" ? (dataOfWeek.length===0 ? (<>Configuracion</> 
-          ) : (
-              <>
-              <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} onSlotClick={selectedSlotClick} />
-              {isSettingModalOpen && (
-                <ProfessorSetting
-                  onSave={SaveSetting}
-                  onCancel={CancelSetting}
-                  selectedBlock={selectedBlock}
-                  setIsSettingModalOpen={setIsSettingModalOpen}
-                  setConfirmation={setConfirmation}
-                  updateSchedule={setDataOfWeek}
+          {seeOption === "C" ? (
+            dataOfWeek.length === 0 ? (
+              <>Configuracion</>
+            ) : (
+              <div>
+                <span className="flex border border-gray-300  w-full justify-center text-xl font-semibold text-gray-700 p-1 shadow-md rounded-lg   ">
+                  Horario de disponibilidad
+                </span>
+                <Schedule
+                  dataOfWeek={dataOfWeek}
+                  timeSlots={timeSlots}
+                  onSlotClick={selectedSlotClick}
                 />
-              )}
-              </>
+                {isSettingModalOpen && (
+                  <ProfessorSetting
+                    onSave={SaveSetting}
+                    onCancel={CancelSetting}
+                    selectedBlock={selectedBlock}
+                    setIsSettingModalOpen={setIsSettingModalOpen}
+                    setConfirmation={setConfirmation}
+                    updateSchedule={setDataOfWeek}
+                  />
+                )}
+              </div>
             )
           ) : (
             <></>
