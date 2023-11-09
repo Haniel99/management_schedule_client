@@ -29,6 +29,7 @@ const ScheduleTable = ({ semesterId, numero,  dsemestre }) => {
       };
       const res = await useGetClassBlock(dataRedux.token, data);
       setDataOfWeek(res.response.response);
+  
     }
     dataSemester();
   }, [semesterId, showModify]);
@@ -56,7 +57,7 @@ const ScheduleTable = ({ semesterId, numero,  dsemestre }) => {
   useEffect(() => {
     setShowForm(false);
   }, [numero]);
-  
+  console.log(dataOfWeek);
   const renderHeader = () => {
     return (
       <tr>
