@@ -48,6 +48,7 @@ const LoginPage = () => {
           const { response } = res;
           dispatch(createUser({ token: response }));
           window.location.href = "/";
+          return
         }
       }
 
@@ -69,7 +70,7 @@ const LoginPage = () => {
               alt="Your Company"
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Inicia sesión en tu cuenta
+              Inicia sesión en su cuenta
             </h2>
           </div>
           {alert ? <p className="text-center">{alertText}</p> : <></>}
