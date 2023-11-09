@@ -157,7 +157,7 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
         ) : (
           <>
             {/* It is to render the schedule table */}
-            <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
+            <table className="mx-auto  whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
               <thead>{renderHeader()}</thead>
               <tbody>{renderTimeSlots()}</tbody>
             </table>

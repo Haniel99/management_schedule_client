@@ -59,6 +59,10 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
     getProfessor();
   }, []);
 
+  useEffect(() => {
+    console.log("Evento");
+  }, [selectProfesor]);
+
   const saveChange = async (e) => {
     let asignatura =
       selectSubject == null ? dataS.asignatura_id : selectSubject.asignatura_id;
@@ -116,8 +120,26 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
   };
   return (
     <div className="flex h-full gap-3">
-      <div className="w-2/5 border border-gray-300 p-8 rounded-md">
-        <h2 className="text-xl my-5">Seleccione los datos a modificar</h2>
+      <div className="grow  bg-gray-50 shadow-lg  p-8 rounded-lg">
+      <h2 className="text-lg text-gray-600 font-semibold my-4">
+          Profesores disponibles para el bloque - {data.bloque[0]}
+        </h2>
+        <div className="flex flex-col overflow-auto h-80 px-2 ">
+          {professors == null ? (
+            <>cargando...</>
+          ) : (
+            professors.map((item) => {
+              return (
+                <div onClick={() => { setSelectProfesor(item) } }  className="px-4 cursor-pointer text-gray-700 font-normal text-base py-2 border rounded-md my-1 hover:bg-gray-100 hover:shadow-md border-b-2 border-gray-300 ">
+                  {item.nombre}
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+      <div className="grow  bg-gray-50 shadow-lg  p-8 rounded-lg">
+        <h2 className="text-lg text-gray-600 font-semibold my-4">Seleccione los datos a modificar</h2>
         <div className="flex flex-col my-3">
           <div className="">
             {subjects == null ? (
@@ -142,17 +164,7 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
             />
           )}
         </div>
-        <div className="my-3">
-          {professors == null ? (
-            <>cargando...</>
-          ) : (
-            <Search
-              setData={setSelectProfesor}
-              placeName={"Buscar profesor"}
-              data={professors}
-            />
-          )}
-        </div>
+
         <div className="my-3">
           <Search
             placeName={"Agregar grupo"}
@@ -161,53 +173,61 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
           />
         </div>
       </div>
-      <div className="w-3/5 border border-gray-300 p-8 rounded-md">
-        <h2 className="text-xl my-5">Datos del bloque</h2>
-        <div className="mb-6">
+      <div className="grow  bg-gray-50 shadow-lg  p-8 rounded-lg">
+        <h2 className="text-lg text-gray-600 font-semibold my-4">Datos del bloque</h2>
+        <div className="mb-6  ">
           <ul>
-            <li className="mb-2">
-              <label form="semestre" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="semestre" className="font-normal">
                 Semestre:
-              </label>{" "}
-              {data.semestre}
+              </label>
+              <span className="font-semibold">{data.semestre}</span>
             </li>
-            <li className="mb-2">
-              <label form="bloque" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="bloque" className="font-normal">
                 Bloque de horaria:
               </label>{" "}
-              {data.bloque[0]}
+              <span className="font-semibold">{data.bloque[0]}</span>
             </li>
-            <li className="mb-2">
-              <label form="dia" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="dia" className="font-normal">
                 Día:
-              </label>{" "}
-              {data.dia}
+              </label>
+              <span className="font-semibold">{data.dia}</span>
             </li>
-            <li className="mb-2">
-              <label form="asignatura" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="asignatura" className="font-normal">
                 Asignatura:
-              </label>{" "}
-              {selectSubject == null ? dataS.asignatura : selectSubject.nombre}
+              </label>
+              <span className="font-semibold">
+                {selectSubject == null
+                  ? dataS.asignatura
+                  : selectSubject.nombre}
+              </span>
             </li>
-            <li className="mb-2">
-              <label form="sala" className="font-semibold">
-                Sala:
-              </label>{" "}
-              {selectRomm == null ? dataS.sala : selectRomm.nombre}
-            </li>
-            <li className="mb-2">
-              <label form="professor" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="professor" className="font-normal">
                 Profesor:
-              </label>{" "}
-              {selectProfesor == null
-                ? dataS.nombre_profesor
-                : selectProfesor.nombre}
+              </label>
+              <span className="font-semibold">
+                {selectProfesor == null ? " " : selectProfesor.nombre}
+              </span>
             </li>
-            <li className="mb-2">
-              <label form="grupo" className="font-semibold">
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="sala" className="font-normal">
+                Sala:
+              </label>
+              <span className="font-semibold">
+                {selectRomm == null ? dataS.sala : selectRomm.nombre}
+              </span>
+            </li>
+            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
+              <label form="grupo" className="font-normal">
                 Grupo:
-              </label>{" "}
-              {selectGroup == null ? dataS.grupo : selectGroup.nombre}
+              </label>
+              <span className="font-semibold">
+                {selectGroup == null ? dataS.grupo : selectGroup.nombre}
+              </span>
             </li>
           </ul>
           {error ? (

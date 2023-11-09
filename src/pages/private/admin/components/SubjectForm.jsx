@@ -58,7 +58,7 @@ function SubjectForm({set}) {
 
 
   return (
-    <div className="flex flex-col justify-center items-center text-center">
+    <div className="flex flex-col m-auto justify-center bg-white p-4 shadow-lg rounded-md items-center text-center">
       <h2 className="text-2xl font-bold mb-4">Ingrese los datos de la asignatura</h2>
       <form className="w-full max-w-sm" action="">
         <div className='flex flex-col items-center mb-4'>

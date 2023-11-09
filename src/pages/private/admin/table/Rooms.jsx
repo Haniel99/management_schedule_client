@@ -12,6 +12,12 @@ const Rooms = ({data}) => {
               <th className="font-semibold text-sm uppercase px-6 py-4">
                 Numero
               </th>
+              <th className="font-semibold text-sm uppercase px-6 py-4">
+                Piso
+              </th>
+              <th className="font-semibold text-sm uppercase px-6 py-4">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -19,6 +25,8 @@ const Rooms = ({data}) => {
               <tr key={index} className="text-gray-600 text-left">
                 <td className="px-6 py-4 whitespace-nowrap">{empleado.nombre}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{empleado.numero}</td>
+                <td className="px-6 py-4 whitespace-nowrap"></td>
+                <td className="px-6 py-4 whitespace-nowrap"></td>
               </tr>
             ))}
           </tbody>

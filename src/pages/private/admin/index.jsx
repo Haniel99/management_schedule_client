@@ -15,7 +15,7 @@ const Admin = () => {
     return (
         <div className='w-full h-screen
         object-cover flex'>
-        <div className='flex flex-col h-screen w-auto line-clamp-1 bg-rose-800'>
+        <div className='flex flex-col h-screen w-auto line-clamp-1 bg-rose-700'>
             <Navbar items={adminElements} exit={adminExit}/>
         </div> 
         <RouteNotFount>

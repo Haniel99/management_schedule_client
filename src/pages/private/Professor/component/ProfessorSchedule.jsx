@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Schedule from "./Schedule";
 import ManagementSchedule from "../../../../components/adminComponent/ManagementSchedule";
 import { useSelector } from "react-redux";
+import HorarioProfesor from "./horarioprofesor";
 import {
   useGetSchedule,
   useGetSemesters,
@@ -9,6 +10,7 @@ import {
 const ProfessorSchedule = () => {
   const dataRedux = useSelector((state) => state.user);
   const [seeOption, setSeeOption] = useState(null);
+  //
   const [dataSection, setDataSection] = useState([]);
   const [ dataOfWeek, setDataOfWeek ] = useState([]);
   useEffect(() => {
@@ -53,7 +55,8 @@ const ProfessorSchedule = () => {
 };
   return (
     <div className="flex flex-col w-full p-2">
-      <nav className="mb-4">
+
+      <nav className="mb-4"  >
         <ul className="flex gap-3">
           <li onClick={() => setSeeOption('H') } >
           {dataSection.length === 0 ? (
@@ -64,7 +67,7 @@ const ProfessorSchedule = () => {
           </li>
 
           <li onClick={()=>setSeeOption('C')}  id={"C"} className="button  cursor-pointer">
-            Configurar disponibilidad
+            
           </li>
           <li onClick={ () => {setSeeOption("M")} } id={"M"} className="button  cursor-pointer">
             Más información

@@ -45,8 +45,8 @@ const ManageSchedule = () => {
     setNumber(numero);
   };
   return (
-    <div className="w-full flex flex-col">
-      <div className="flex font-semibold w-full p-6 border-2 border-y-gray-300">
+    <div className="w-full  bg-gray-200  flex flex-col">
+      <div className="flex font-semibold bg-[#fafafa] shadow-md  w-full p-6 border-2 border-b-gray-200">
         {/* Este componente verifica si existen semestres activos */}
         <OpcionsManaging
           fn={fn}
@@ -61,7 +61,7 @@ const ManageSchedule = () => {
         <div>No hay registros</div>
       ) : (
         <>
-          <div className="flex  overflow-auto flex-col">
+          <div className="flex  overflow-auto flex-col ">
             {dataSemesters.length == 0 ? (
               <>seleccione un semestre</>
             ) : (
@@ -71,7 +71,7 @@ const ManageSchedule = () => {
                   plan={plan}
                   options={dataSemesters}
                 />
-                <div className="flex my-3 justify-center items-center">
+                <div className="flex my-3  px-10 justify-center items-center">
                   {semesterId == null ? (
                     <>cargando...</>
                   ) : (
