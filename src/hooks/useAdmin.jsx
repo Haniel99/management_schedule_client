@@ -34,7 +34,6 @@ const useGetSemesters = async (token, data) => {
 
 const useCreateSchedule = async (token, data) => {
   try {
-    console.log(data);
     const res = await instance.post(
       "admin/create-schedule",
       { data },

@@ -1,7 +1,6 @@
-import './table.css';
-
-const UserStatistics = ({datos}) => {
-
+import "./table.css";
+import {  FontAwesomeIcon  } from "@fortawesome/react-fontawesome";
+const UserStatistics = ({ datos }) => {
   return (
     <div className="w-full">
       <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y shadow-md  divide-gray-300 overflow-hidden">
@@ -10,9 +9,7 @@ const UserStatistics = ({datos}) => {
             <th className="font-semibold text-sm uppercase px-6 py-4">
               Nombre Completo
             </th>
-            <th className="font-semibold text-sm uppercase px-6 py-4">
-              RUT
-            </th>
+            <th className="font-semibold text-sm uppercase px-6 py-4">RUT</th>
             <th className="font-semibold text-sm uppercase px-6 py-4">
               Correo
             </th>
@@ -30,8 +27,19 @@ const UserStatistics = ({datos}) => {
               <td className="px-6 py-4 whitespace-nowrap">{empleado.nombre}</td>
               <td className="px-6 py-4 whitespace-nowrap">{empleado.rut}</td>
               <td className="px-6 py-4 whitespace-nowrap">{empleado.correo}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{empleado.horasTrabajo}</td>
-              <td className="px-6 py-4 whitespace-nowrap"></td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {empleado.horasTrabajo}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex gap-2">
+                  <div>
+                    <span className="text-xs text-gray-700 font-medium">
+                      Disponibilidad
+                    </span>{" "}
+                    <FontAwesomeIcon icon="fa-regular fa-eye" />{" "}
+                  </div>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -41,4 +49,3 @@ const UserStatistics = ({datos}) => {
 };
 
 export default UserStatistics;
-

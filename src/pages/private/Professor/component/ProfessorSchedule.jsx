@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Schedule from "./Schedule";
 import ManagementSchedule from "../../../../components/adminComponent/ManagementSchedule";
 import { useSelector } from "react-redux";
-import HorarioProfesor from "./horarioprofesor";
 import {
   useGetSchedule,
   useGetSemesters,

@@ -93,9 +93,10 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
           {professors == null ? (
             <>cargando...</>
           ) : (
-            professors.map((item) => {
+            professors.map((item, index) => {
               return (
                 <div
+                key={index}
                   onClick={() => {
                     setSelectProfesor(item);
                   }}

@@ -35,8 +35,9 @@ const ScheduleForm = ({toggle}) => {
     setPrevent(false);
   };
   return (
-    <div className="flex justify-center text-center">
-      <form className="mt-8 space-y-6">
+    <div className="flex flex-col  lg:w-1/3 md:w-1/2 justify-center m-auto py-6 px-8 bg-gray-50 rounded-lg shadow-lg">
+      <h2 className="flex justify-center w-full text-gray-800 text-xl font-semibold ">Crear Horario Semestral</h2>
+      <form className="mt-8 w-full space-y-6">
       {prevent ? null : <p className="text-red-500">Complete el formulario</p>}
         <div className="flex flex-col items-center">
           <label htmlFor="plan" className="mb-2 font-medium text-gray-700">

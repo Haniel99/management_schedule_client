@@ -63,7 +63,7 @@ const ManageSchedule = () => {
         <>
           <div className="flex  overflow-auto flex-col ">
             {dataSemesters.length == 0 ? (
-              <>seleccione un semestre</>
+              <></>
             ) : (
               <>
                 <NavSchedule

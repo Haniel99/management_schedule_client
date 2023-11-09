@@ -19,8 +19,8 @@ const Admin = () => {
             <Navbar items={adminElements} exit={adminExit}/>
         </div> 
         <RouteNotFount>
-            <Route index element = {<>It's index</>} />
-            <Route path='/inicio' element = {<>It's index</>} />
+            <Route index element = {<></>} />
+            <Route path='/inicio' element = {<></>} />
             <Route path='/gestion' element = {<ManageSchedule/>} />
             <Route path='/profesores' element = {<Professor/>} />
             <Route path='/asignaturas' element = {<Subjects/>} />

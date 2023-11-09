@@ -6,7 +6,7 @@ import AddClassBlockForm from "../components/AddClassBlockForm";
 import ModalRgister from "../../../../components/adminComponent/ModalRegister";
 import ModifyBlock from "../components/ModifyBlock";
 
-const ScheduleTable = ({ semesterId,  dsemestre }) => {
+const ScheduleTable = ({ semesterId, numero,  dsemestre }) => {
   //REDUX
   const dataRedux = useSelector((state) => state.user);
   //STATES
@@ -18,9 +18,9 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
     semestre: null,
   });
   const [showForm, setShowForm] = useState(false);
-  const [ showModify, setShowModify ] = useState(false);
+  const [showModify, setShowModify] = useState(false);
   const [open, setOpen] = useState(false);
-  const [ dataBlock, setDataBlock ] = useState(null);
+  const [dataBlock, setDataBlock] = useState(null);
   //This useEffect is to get all semester datas from a single semester id
   useEffect(() => {
     async function dataSemester() {
@@ -51,7 +51,12 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
     });
     setDataBlock(datas);
     setOpen(true);
-  }
+  };
+
+  useEffect(() => {
+    setShowForm(false);
+  }, [numero]);
+  
   const renderHeader = () => {
     return (
       <tr>
@@ -89,9 +94,7 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
           {time[0]}
         </td>
         {dataOfWeek.map((value, index) => {
-          const professor = value[1].find(
-            (val) => val.hora_inicio === time[0]
-          );
+          const professor = value[1].find((val) => val.hora_inicio === time[0]);
           if (!professor) {
             return (
               <td
@@ -104,15 +107,13 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
             );
           }
           return (
-            <td key = {index}
-            >
+            <td key={index}>
               {value[1].map((val, i) => {
                 if (val.hora_inicio === time[0]) {
-                  
                   return (
                     <div
-                      key={i}  
-                      onClick={() => modifyBlock(time,val, value[0]) }                    
+                      key={i}
+                      onClick={() => modifyBlock(time, val, value[0])}
                       className="px-6 py-4 whitespace-nowrap text-center border-b-2 border-gray-200 cursor-pointer transition-colors hover:bg-blue-100"
                     >
                       <div className="text-sm">
@@ -125,7 +126,7 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
                         {val.grupo}
                       </div>
                     </div>
-                  )
+                  );
                 }
               })}
             </td>
@@ -146,28 +147,36 @@ const ScheduleTable = ({ semesterId,  dsemestre }) => {
       ) : (
         <div className="w-full m-5 overflow-x-auto">
           {/* It is to render the form */}
-          {showModify?<ModifyBlock data={professorData} dataS={dataBlock} setShowForm={setShowModify} />:(
-        showForm ? (
-          <div className="w-full h-full">
-            <AddClassBlockForm
+          {showModify ? (
+            <ModifyBlock
               data={professorData}
-              setShowForm={setShowForm}
+              dataS={dataBlock}
+              setShowForm={setShowModify}
             />
-          </div>
-        ) : (
-          <>
-            {/* It is to render the schedule table */}
-            <table className="mx-auto  whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
-              <thead>{renderHeader()}</thead>
-              <tbody>{renderTimeSlots()}</tbody>
-            </table>
-          </>
-        )
-      )}
+          ) : showForm ? (
+            <div className="w-full h-full">
+              <AddClassBlockForm
+                data={professorData}
+                setShowForm={setShowForm}
+              />
+            </div>
+          ) : (
+            <>
+              {/* It is to render the schedule table */}
+              <table className="mx-auto  whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
+                <thead>{renderHeader()}</thead>
+                <tbody>{renderTimeSlots()}</tbody>
+              </table>
+            </>
+          )}
         </div>
       )}
-      <ModalRgister open={open} setOpen={setOpen} add={setShowForm} modify={setShowModify} ></ModalRgister>
-      
+      <ModalRgister
+        open={open}
+        setOpen={setOpen}
+        add={setShowForm}
+        modify={setShowModify}
+      ></ModalRgister>
     </>
   );
 };

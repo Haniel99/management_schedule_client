@@ -128,9 +128,9 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
           {professors == null ? (
             <>cargando...</>
           ) : (
-            professors.map((item) => {
+            professors.map((item, index) => {
               return (
-                <div onClick={() => { setSelectProfesor(item) } }  className="px-4 cursor-pointer text-gray-700 font-normal text-base py-2 border rounded-md my-1 hover:bg-gray-100 hover:shadow-md border-b-2 border-gray-300 ">
+                <div key={index}  onClick={() => { setSelectProfesor(item) } }  className="px-4 cursor-pointer text-gray-700 font-normal text-base py-2 border rounded-md my-1 hover:bg-gray-100 hover:shadow-md border-b-2 border-gray-300 ">
                   {item.nombre}
                 </div>
               );
