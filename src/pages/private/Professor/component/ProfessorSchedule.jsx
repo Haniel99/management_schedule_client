@@ -13,8 +13,10 @@ const ProfessorSchedule = () => {
   const [seeOption, setSeeOption] = useState(null);
   const [dataSection, setDataSection] = useState([]);
   const [ dataOfWeek, setDataOfWeek ] = useState([]);
-  const [ isSettingModalOpen, setIsSettingModalOpen] = useState(false);
-  const [ selectedTimeSlots, setSelectedTimeSlots] = useState(null);
+  const [ isSettingModalOpen, setIsSettingModalOpen ] = useState(false);
+  const [ selectedTimeSlots, setSelectedTimeSlots ] = useState(null);
+  const [ selectedBlock, setSelectedBlock ] = useState(null); // Nuevo estado para el bloque horario seleccionado
+  const [confirmation, setConfirmation] = useState("");
 
   useEffect(() => {
     async function get() {
@@ -34,11 +36,11 @@ const ProfessorSchedule = () => {
     ["09:40", 2],
     ["09:50", 3],
     ["11:20", 4],
-    ["14:45", 6],
-    ["16:20", 7],
-    ["17:55", 8],
-    ["18:40", 9],
-    ["19:30", 10],
+    ["14:45", 5],
+    ["16:20", 6],
+    ["17:55", 7],
+    ["18:40", 8],
+    ["19:30", 9],
   ];
 
   const change = (e) => {
@@ -57,15 +59,70 @@ const ProfessorSchedule = () => {
     }
   };
 
-  const selectedSlotClick = (selectedTime) => { 
+  const selectedSlotClick = (selectedTime, dayOfWeek) => {
     setSelectedTimeSlots(selectedTime);
-    setIsSettingModalOpen(true); //Para abrir el modal con el formulario
+    setSelectedBlock({
+      timeSlot: selectedTime[0],
+      dayOfWeek: dayOfWeek, // Utiliza el día de la semana obtenido
+    });
+    setIsSettingModalOpen(true);
   };
 
-  const SaveSetting = (data) => {
+  const SaveSetting = (selectedTime) => {
+    if (!dataOfWeek || dataOfWeek.length === 0) {
+      console.error("DataOfWeek is null or empty");
+      return;
+    }
+  
+    // Actualizar el estado del bloque horario disponible en dataOfWeek
+    const updatedDataOfWeek = dataOfWeek.map((dayData) => {
+      // Verificar que dayData no sea null o undefined
+      if (!dayData || !dayData[1]) {
+        console.error("DayData or DayData[1] is null or undefined");
+        return [dayData[0], []];
+      }
+  
+      const updatedBlocks = dayData[1].map((block) => {
+        if (block.hora_inicio === selectedTime[0] && dayData[0] === selectedTime[1]) {
+          return { ...block, disponible: true, confirmation: "confirmed" };
+        }
+        return block;
+      });
+  
+      return [dayData[0], updatedBlocks];
+    });
+  
+    setDataOfWeek(updatedDataOfWeek);
+  
+    // Enviar los datos al padre para guardar en la base de datos
+    // ...
+    updateSchedule({
+      timeSlot: selectedBlock.timeSlot,
+      dayOfWeek: selectedBlock.dayOfWeek,
+      confirmation: "confirmed",
+    }); 
+  
+    // Cerrar el modal y limpiar el estado de confirmación
+    setIsSettingModalOpen(false);
+    setConfirmation("");
+  };
 
-    console.log("Datos guardados",data);
-    setIsSettingModalOpen(false); //Cerrar el modal
+  const updateSchedule = ({ timeSlot, dayOfWeek, confirmation }) => {
+    // Construct a class name based on the selected time slot and day of the week
+    const className = `.px-6.py-4.whitespace-nowrap.text-center.border-b-2.border-gray-200.bg-green-100.ring.ring-green-400.ring-opacity-50[data-time="${timeSlot}"][data-day="${dayOfWeek}"]`;
+  
+    // Update the CSS class of the selected block to indicate availability
+    const selectedBlockElement = document.querySelector(className);
+    if (selectedBlockElement) {
+      selectedBlockElement.classList.remove("bg-green-100", "ring", "ring-green-400", "ring-opacity-50");
+      selectedBlockElement.classList.add("bg-gray-100");
+    }
+  
+    // Update the text of the selected block to "Horario disponible"
+    const selectedBlockTextElement = selectedBlockElement?.querySelector(".text-sm .font-medium");
+    if (selectedBlockTextElement) {
+      selectedBlockTextElement.textContent = "Horario disponible";
+    }
   };
 
   const CancelSetting = () => {
@@ -103,11 +160,15 @@ const ProfessorSchedule = () => {
           {seeOption === "C" ? (dataOfWeek.length===0 ? (<>Configuracion</> 
           ) : (
               <>
-              <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} onSlotClick={selectedSlotClick}/>
+              <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots} onSlotClick={selectedSlotClick} />
               {isSettingModalOpen && (
                 <ProfessorSetting
                   onSave={SaveSetting}
                   onCancel={CancelSetting}
+                  selectedBlock={selectedBlock}
+                  setIsSettingModalOpen={setIsSettingModalOpen}
+                  setConfirmation={setConfirmation}
+                  updateSchedule={setDataOfWeek}
                 />
               )}
               </>

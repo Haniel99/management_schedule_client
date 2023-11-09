@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Schedule = ({ dataOfWeek, timeSlots, onSlotClick }) => {
+const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule}) => {
   const renderHeader = () => {
     return (
       <tr>
@@ -28,29 +28,36 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick }) => {
           {time[0]}
         </td>
         {dataOfWeek.map((value, index) => {
-          const professor = value[1].find(
-            (val) => val.hora_inicio === time[0]
-          );
+          const professor = value[1].find((val) => val.hora_inicio === time[0]);
+  
+          const isConfirmed = professor && professor.disponible && professor.confirmation === "confirmed";
+  
+          const slotClassName = `px-6 py-4 whitespace-nowrap text-center border-b-2 border-gray-200 cursor-pointer transition-colors ${
+            isConfirmed ? "bg-green-100 ring ring-green-400 ring-opacity-50" : "hover:bg-rose-300"
+          }`;
+  
           if (!professor) {
             return (
               <td
                 key={index}
-                onClick={() => onSlotClick(time)}
-                className="px-6 py-4 whitespace-nowrap text-center border-b-2 border-gray-200 cursor-pointer transition-colors hover:bg-rose-300"
+                data-time={time[0]}
+                data-day={value[0]}
+                onClick={() =>
+                  onSlotClick && typeof onSlotClick === "function" && onSlotClick(time, value[0])
+                }
+                className={slotClassName}
               >
-                Sin asignar
+                {isConfirmed ? "Horario disponible" : "Sin asignar"}
               </td>
             );
           }
+  
           return (
             <td key={index}>
               {value[1].map((val, i) => {
                 if (val.hora_inicio === time[0]) {
                   return (
-                    <div
-                      key={i}
-                      className="px-6 py-4 whitespace-nowrap text-center border-b-2 border-gray-200 cursor-pointer transition-colors hover:bg-blue-100"
-                    >
+                    <div key={i} className={slotClassName}>
                       <div className="text-sm">
                         <span className="font-medium">{professor.asignatura}</span>
                         <br />
