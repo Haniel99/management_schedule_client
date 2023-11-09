@@ -153,8 +153,8 @@ const AddClassBlockForm = ({ data, setShowForm }) => {
               </label>
               <span className="font-semibold">{data.semestre}</span>
             </li>
-            <li className="flex justify-between mb-2 border-gray-300  border-b-2 py-1 px-2">
-              <label form="bloque" className="font-normal">
+            <li className="mb-2">
+              <label form="bloque" className="font-semibold">
                 Bloque de horaria:
               </label>
               <span className="font-semibold">{data.bloque[0]}</span>

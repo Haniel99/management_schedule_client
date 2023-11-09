@@ -164,7 +164,6 @@ const ModifyBlock = ({ data, dataS, setShowForm }) => {
             />
           )}
         </div>
-
         <div className="my-3">
           <Search
             placeName={"Agregar grupo"}
