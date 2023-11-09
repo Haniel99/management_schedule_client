@@ -108,17 +108,14 @@ const ProfessorSchedule = () => {
   };
 
   const updateSchedule = ({ timeSlot, dayOfWeek, confirmation }) => {
-    // Construct a class name based on the selected time slot and day of the week
     const className = `.px-6.py-4.whitespace-nowrap.text-center.border-b-2.border-gray-200.bg-green-100.ring.ring-green-400.ring-opacity-50[data-time="${timeSlot}"][data-day="${dayOfWeek}"]`;
   
-    // Update the CSS class of the selected block to indicate availability
     const selectedBlockElement = document.querySelector(className);
     if (selectedBlockElement) {
       selectedBlockElement.classList.remove("bg-green-100", "ring", "ring-green-400", "ring-opacity-50");
       selectedBlockElement.classList.add("bg-gray-100");
     }
   
-    // Update the text of the selected block to "Horario disponible"
     const selectedBlockTextElement = selectedBlockElement?.querySelector(".text-sm .font-medium");
     if (selectedBlockTextElement) {
       selectedBlockTextElement.textContent = "Horario disponible";
