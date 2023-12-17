@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { createAvailbleBlock } from '../../../../hooks/useProfessor';
+import { useSelector } from 'react-redux';
 
-const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule}) => {
+const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioId}) => {
+  const dataRedux = useSelector((state) => state.user);
   const renderHeader = () => {
     return (
       <tr>
@@ -42,8 +45,19 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule}) => {
                 key={index}
                 data-time={time[0]}
                 data-day={value[0]}
-                onClick={() =>
+                onClick={(e) =>{ 
                   onSlotClick && typeof onSlotClick === "function" && onSlotClick(time, value[0])
+                  let td = e.target;
+                  if (td.innerHTML == "Sin asignar") {
+                    td.className = "bg-green-200 text-center cursor-pointer";
+                    td.innerHTML = "Asignado";
+                    createAvailbleBlock(dataRedux.token, time[1], value[0], horarioId);
+                  } else {
+                    td.className = "text-center cursor-pointer hover:bg-rose-300";
+                    td.innerHTML = "Sin asignar";
+                    createAvailbleBlock(dataRedux.token, time[1], value[0])
+                  }
+                }
                 }
                 className={slotClassName}
               >

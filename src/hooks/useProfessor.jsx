@@ -14,6 +14,27 @@ const useGetSchedule = async (token) => {
   }
 };
 
+const createAvailbleBlock = async (token, block_id, day, schedule_id) => {
+  try {
+    console.log("f-createBlock: ", block_id, day, schedule_id);
+    const res = await instance.post("professor/crear-bloque", {
+      data: {
+        bloque_id: block_id,
+        dia: day,
+        horario_id: schedule_id
+      }
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    console.log("f-createBlock-fin");
+    return res.data;
+  } catch (error) {
+    console.log(error)
+  }
+};
+
 const useGetSemesters = async (token, data) => {
   try {
     const res = await instance.post(
@@ -33,5 +54,6 @@ const useGetSemesters = async (token, data) => {
 
 export {
     useGetSchedule,
-    useGetSemesters
+    useGetSemesters,
+    createAvailbleBlock
 }

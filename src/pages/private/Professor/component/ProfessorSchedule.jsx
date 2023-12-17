@@ -18,6 +18,7 @@ const ProfessorSchedule = () => {
   const [selectedTimeSlots, setSelectedTimeSlots] = useState(null);
   const [selectedBlock, setSelectedBlock] = useState(null); // Nuevo estado para el bloque horario seleccionado
   const [confirmation, setConfirmation] = useState("");
+  const [horario_id, setHorarioId] = useState(null)
 
   useEffect(() => {
     async function get() {
@@ -26,6 +27,7 @@ const ProfessorSchedule = () => {
       if (!res.status) {
         return false;
       }
+      console.log(res);
       //save the datas in datasetion
       setDataSection(res.response);
     }
@@ -49,6 +51,7 @@ const ProfessorSchedule = () => {
   };
 
   const setSemester = async (schehule, plan, semester) => {
+    setHorarioId(schehule);
     const data = {
       schedule_id: schehule,
     };
@@ -196,6 +199,7 @@ const ProfessorSchedule = () => {
                   dataOfWeek={dataOfWeek}
                   timeSlots={timeSlots}
                   onSlotClick={selectedSlotClick}
+                  horarioId={horario_id}
                 />
                 {isSettingModalOpen && (
                   <ProfessorSetting
