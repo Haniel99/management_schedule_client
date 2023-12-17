@@ -6,11 +6,12 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioI
   const dataRedux = useSelector((state) => state.user);
   const renderHeader = () => {
     return (
+      
       <tr>
         <th className="px-6 py-4 text-left bg-gray-50 text-gray-600 uppercase font-semibold border-b-2 border-gray-200">
           Hora
         </th>
-        {dataOfWeek.map((value, index) => {
+        {props.dataOfWeek.map((value, index) => {
           return (
             <th
               key={index}
@@ -23,22 +24,29 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioI
       </tr>
     );
   };
-
+  const  onClick = (param1, param2)=>{
+    props.onSlotClick(param1, param2);
+  }
   const renderTimeSlot = (time) => {
     return (
       <tr key={time[0]}>
         <td className="px-6 py-4 whitespace-nowrap border-b-2 border-gray-200 bg-gray-100">
           {time[0]}
         </td>
-        {dataOfWeek.map((value, index) => {
+        {props.dataOfWeek.map((value, index) => {
           const professor = value[1].find((val) => val.hora_inicio === time[0]);
-  
-          const isConfirmed = professor && professor.disponible && professor.confirmation === "confirmed";
-  
+
+          const isConfirmed =
+            professor &&
+            professor.disponible &&
+            professor.confirmation === "confirmed";
+
           const slotClassName = `px-6 py-4 whitespace-nowrap text-center border-b-2 border-gray-200 cursor-pointer transition-colors ${
-            isConfirmed ? "bg-green-100 ring ring-green-400 ring-opacity-50" : "hover:bg-rose-300"
+            isConfirmed
+              ? "bg-green-100 ring ring-green-400 ring-opacity-50"
+              : "hover:bg-rose-300"
           }`;
-  
+
           if (!professor) {
             return (
               <td
@@ -65,7 +73,7 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioI
               </td>
             );
           }
-  
+
           return (
             <td key={index}>
               {value[1].map((val, i) => {
@@ -73,7 +81,9 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioI
                   return (
                     <div key={i} className={slotClassName}>
                       <div className="text-sm">
-                        <span className="font-medium">{professor.asignatura}</span>
+                        <span className="font-medium">
+                          {professor.asignatura}
+                        </span>
                         <br />
                         {val.sala}
                         <br />
@@ -93,21 +103,20 @@ const Schedule = ({ dataOfWeek, timeSlots, onSlotClick, updateSchedule, horarioI
   };
 
   const renderTimeSlots = () => {
-    return timeSlots.map((time) => renderTimeSlot(time));
+    return props.timeSlots.map((time) => renderTimeSlot(time));
   };
 
   return (
     <>
-      {dataOfWeek.length === 0 ? (
+      {props.dataOfWeek.length === 0 ? (
         <>Cargando</>
       ) : (
         <div className="w-full m-5 overflow-x-auto">
-          <table
-            className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400"
-          >
+          <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
             <thead>{renderHeader()}</thead>
             <tbody>{renderTimeSlots()}</tbody>
           </table>
+          
         </div>
       )}
     </>
