@@ -34,6 +34,7 @@ const LoginPage = () => {
           const { response } = res;
           dispatch(createUser({ token: response }));
           window.location.href = "/";
+          return
         }
       } else if (type === "Rector") {
         res = await useLogin("rector", loginData);
@@ -41,6 +42,7 @@ const LoginPage = () => {
           const { response } = res;
           dispatch(createUser({ token: response }));
           window.location.href = "/";
+          return
         }
       } else {
         res = await useLogin("professor", loginData);

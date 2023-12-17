@@ -60,6 +60,7 @@ const ProfessorSchedule = () => {
   };
 
   const selectedSlotClick = (selectedTime, dayOfWeek) => {
+    console.log(selectedTime, dayOfWeek);
     setSelectedTimeSlots(selectedTime);
     setSelectedBlock({
       timeSlot: selectedTime[0],
@@ -194,8 +195,8 @@ const ProfessorSchedule = () => {
                 </span>
                 <Schedule
                   dataOfWeek={dataOfWeek}
-                  timeSlots={timeSlots}
                   onSlotClick={selectedSlotClick}
+                  timeSlots={timeSlots}
                 />
                 {isSettingModalOpen && (
                   <ProfessorSetting
