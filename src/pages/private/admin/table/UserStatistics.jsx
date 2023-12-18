@@ -1,8 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./table.css";
-import Schedule from "../../Professor/component/Schedule";
+import { FaEye } from "react-icons/fa";
+import HorarioDisponibilidad from "../../Professor/component/HorarioProfesor";
+import {
+  useGetSchedule,
+  useGetHorarioProfessor,
+} from "../../../../hooks/useAdmin";
+import ManagementSchedule from "../../../../components/adminComponent/ManagementSchedule";
+import { useSelector } from "react-redux";
+
 const UserStatistics = ({ datos }) => {
+  const dataRedux = useSelector((state) => state.user);
   const [showShedule, setShowSchedule] = useState(false);
+  const [dataSection, setDataSection] = useState([]);
+  const [horario, setHorario] = useState(null);
+  const [profesor, setProfesor] = useState(null);
+  const setSemester = async (schehule) => {
+    const data = {
+      horario_id: schehule,
+      user_id: profesor.profesor_id,
+    };
+    const res = await useGetHorarioProfessor(dataRedux.token, data);
+    setDataOfWeek(res.response);
+  };
   const [dataOfWeek, setDataOfWeek] = useState([
     ["Lunes", []],
     ["Martes", []],
@@ -10,25 +30,48 @@ const UserStatistics = ({ datos }) => {
     ["Jueves", []],
     ["Viernes", []],
   ]);
+  useEffect(() => {
+    async function get() {
+      //This res is to get the schedules datas
+      const res = await useGetSchedule(dataRedux.token);
+      if (!res.status) {
+        return false;
+      }
+      //save the datas in datasetion
+      setDataSection(res.response);
+    }
+    get();
+  }, []);
+  const verProfesor = async (profesor) => {
+    setShowSchedule(true);
+    setProfesor(profesor);
+  };
 
   const timeSlots = [
     ["08:00", 1],
     ["09:40", 2],
-    ["09:50", 3],
-    ["11:20", 4],
-    ["14:45", 6],
-    ["16:20", 7],
-    ["17:55", 8],
-    ["18:40", 9],
-    ["19:30", 10],
+    ["11:20", 3],
+    ["14:45", 4],
+    ["16:20", 5],
+    ["17:55", 6],
+    ["18:40", 7],
+    ["19:30", 8],
   ];
 
   return (
     <div className="w-full">
       {showShedule ? (
-        <div className="flex w-full">
-          <Schedule dataOfWeek={dataOfWeek} timeSlots={timeSlots}></Schedule>
-        </div>
+        <>
+          <div className="flex mx-48">
+            <ManagementSchedule data={dataSection} fn={setSemester} />
+          </div>
+          <div className="flex w-full">
+            <HorarioDisponibilidad
+              dataOfWeek={dataOfWeek}
+              timeSlots={timeSlots}
+            />
+          </div>
+        </>
       ) : (
         <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y shadow-md  divide-gray-300 overflow-hidden">
           <thead className="bg-gray-50">
@@ -63,15 +106,14 @@ const UserStatistics = ({ datos }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-2">
-                    <div>
-                      <span
-                        onClick={() => {
-                          setShowSchedule(true);
-                        }}
-                        className="text-xs shadow-xl rounded-lg bg-gray-200 px-3 cursor-pointer py-1 text-gray-700 font-medium"
-                      >
-                        Disponibilidad
-                      </span>{" "}
+                    <div
+                      className="flex gap-3 cursor-pointer items-center"
+                      onClick={() => verProfesor(empleado)}
+                    >
+                      <FaEye />
+                      <span className="text-xs  py-1 text-gray-700 font-medium">
+                        Ver horario
+                      </span>
                     </div>
                   </div>
                 </td>

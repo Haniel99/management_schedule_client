@@ -19,7 +19,7 @@ const Professor = () => {
   return (
     <div className="w-full  bg-gray-200  flex flex-col">
       <div className="flex font-semibold bg-[#fafafa] shadow-md  w-full p-6 border-2 border-b-gray-200">
-        <OpcionsProfessor nameButton={"profesor"} option={setShowOption} />
+        <OpcionsProfessor nameButton={"profesores"} option={setShowOption} />
       </div>
       <div className="flex w-full my-6 justify-center  overflow-auto">
         <div className="flex w-full">

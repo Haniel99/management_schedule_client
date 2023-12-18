@@ -70,7 +70,7 @@ const ProfessorSchedule = () => {
   };
   const deleteBlock = async (id) =>{
     await useDeleteBlock(dataRedux.token, id);
-    setUpdate(update+1);
+    setUpdate(update+1)
   }
   const selectedSlotClick = async (selectedTime, dayOfWeek) => {
     const data = {

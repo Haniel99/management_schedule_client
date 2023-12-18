@@ -16,6 +16,8 @@ const useDeleteBlock  = async (token, bloque_id) => {
   }
 };
 
+
+
 const useGetHorarioProfessor = async (token, horario) => {
   try {
     const res = await instance.get(
@@ -61,6 +63,8 @@ const useGetSchedule = async (token) => {
     return error.response.data;
   }
 };
+
+
 
 const useGetSemesters = async (token, data) => {
   try {

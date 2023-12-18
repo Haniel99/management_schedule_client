@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 
-const Schedule = (props) => {
+const HorarioDisponibilidad = (props) => {
   const renderHeader = () => {
     return (
-      
       <tr>
         <th className="px-6 py-4 text-left bg-gray-50 text-gray-600 uppercase font-semibold border-b-2 border-gray-200">
           Hora
@@ -33,30 +31,23 @@ const Schedule = (props) => {
             return (
               <td
                 key={index}
+                className=""
                 data-time={time[0]}
                 data-day={value[0]}
               >
-                Sin asignar
+                No disponible
               </td>
             );
           }
 
           return (
-            <td key={index}>
+            <td key={index} className="bg-green-400 border-green-700">
               {value[1].map((val, i) => {
                 if (val.hora_inicio === time[0]) {
                   return (
-                    <div key={i} >
-                      <div className="text-sm">
-                        <span className="font-medium">
-                          {professor.asignatura}
-                        </span>
-                        <br />
-                        {val.sala}
-                        <br />
-                        {val.nombre_profesor}
-                        <br />
-                        {val.grupo}
+                    <div key={i}>
+                      <div className="text-base font-semibold text-gray-700 ">
+                        Reservado
                       </div>
                     </div>
                   );
@@ -78,16 +69,17 @@ const Schedule = (props) => {
       {props.dataOfWeek.length === 0 ? (
         <>Cargando</>
       ) : (
-        <div className="w-full m-5 overflow-x-auto">
-          <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
-            <thead>{renderHeader()}</thead>
-            <tbody>{renderTimeSlots()}</tbody>
-          </table>
-          
-        </div>
+        <>
+          <div className="w-full m-5 overflow-x-auto">
+            <table className="mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden border border-gray-400">
+              <thead>{renderHeader()}</thead>
+              <tbody>{renderTimeSlots()}</tbody>
+            </table>
+          </div>
+        </>
       )}
     </>
   );
 };
 
-export default Schedule;
+export default HorarioDisponibilidad;

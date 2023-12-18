@@ -1,5 +1,22 @@
 import { instance } from "../utils/configurationAPI";
 
+
+const useGetHorarioProfessor = async (token, data) => {
+  try {
+    const res = await instance.post(
+      `admin/get-horario-profesor`,
+      {  data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
 //This function is to get all sechedule datas
 const useGetSchedule = async (token) => {
   try {
@@ -247,5 +264,6 @@ export {
   useIsType,
   useGetType,
   useUpdateClassBlock,
-  useDeleteClassBlock
+  useDeleteClassBlock,
+  useGetHorarioProfessor
 };

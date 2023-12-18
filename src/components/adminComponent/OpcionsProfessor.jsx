@@ -10,7 +10,7 @@ const OpcionsAdmin = ({option, nameButton}) => {
     return (
         <div className="flex gap-4">
             <div>
-                <button onClick={addProfessor} className='button'>Estadisticas de {nameButton}</button>
+                <button onClick={addProfessor} className='button'>Lista de {nameButton}</button>
             </div>
             <div>
                 <button onClick={showProfessors} className='button'>Agregar {nameButton}</button>               
