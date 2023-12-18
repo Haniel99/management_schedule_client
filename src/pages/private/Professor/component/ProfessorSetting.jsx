@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ProfessorSetting = ({ onSave, onCancel, selectedBlock, setIsSettingModalOpen, updateSchedule }) => {
+const ProfessorSetting = ({ onSave, onCancel, selectedBlock, setIsSettingModalOpen }) => {
   const [confirmation, setConfirmation] = useState("");
 
   const handleSave = () => {
@@ -14,19 +14,6 @@ const ProfessorSetting = ({ onSave, onCancel, selectedBlock, setIsSettingModalOp
     // Enviar los datos al padre para guardar en la base de datos
     onSave(availabilityData);
   
-    // Actualizar el estado para reflejar los cambios en la interfaz de usuario
-    updateSchedule((prevData) => {
-        // Implementa la lógica para actualizar el estado según tus necesidades
-        return prevData.map((dayData) => {
-            // Implementa la lógica según tu estructura de datos
-            return [dayData[0], dayData[1].map((block) => {
-                if (block.hora_inicio === selectedBlock.timeSlot && dayData[0] === selectedBlock.dayOfWeek) {
-                    return { ...block, disponible: true, confirmation: "confirmed" };
-                }
-                return block;
-            })];
-        });
-    });
   
     // Cerrar el modal y limpiar el estado de confirmación
     setIsSettingModalOpen(false);
